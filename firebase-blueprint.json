@@ -1,0 +1,48 @@
+{
+  "entities": {
+    "Member": {
+      "collection": "members",
+      "fields": {
+        "name": { "type": "string" },
+        "age": { "type": "number" },
+        "interests": { "type": "array" },
+        "mode": { "type": "string" },
+        "registeredAt": { "type": "string" },
+        "status": { "type": "string" }
+      }
+    },
+    "Config": {
+      "collection": "config",
+      "fields": {
+        "pageTitle": { "type": "string" },
+        "pageSubtitle": { "type": "string" }
+      }
+    },
+    "WhatsAppRegistration": {
+      "collection": "whatsapp_leads",
+      "fields": {
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "submittedAt": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    },
+    "HelpChatMessage": {
+      "collection": "help_chats",
+      "fields": {
+        "memberId": { "type": "string" },
+        "memberName": { "type": "string" },
+        "sender": { "type": "string" },
+        "text": { "type": "string" },
+        "timestamp": { "type": "string" }
+      }
+    },
+    "BlockedUser": {
+      "collection": "blocked_users",
+      "fields": {
+        "memberId": { "type": "string" },
+        "blockedAt": { "type": "string" }
+      }
+    }
+  }
+}
