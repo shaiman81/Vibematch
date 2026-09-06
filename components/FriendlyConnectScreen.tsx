@@ -214,26 +214,6 @@ export default function FriendlyConnectScreen({
               </div>
             </div>
 
-            {/* Direct In-App Chat Quick Card */}
-            <button
-              type="button"
-              onClick={() => setActiveTab('chat')}
-              className="w-full p-4 rounded-3xl bg-gradient-to-r from-[#FF6B6B] to-[#ff477e] text-white flex items-center justify-between shadow-md hover:opacity-95 transition-all cursor-pointer text-left"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center">
-                  <MessageCircle className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <div className="text-sm font-black leading-tight">In-App Chat Kholein</div>
-                  <div className="text-xs text-pink-100">Live chat support aur direct baat</div>
-                </div>
-              </div>
-              <span className="bg-white text-[#FF6B6B] text-xs font-black px-3 py-1.5 rounded-full uppercase shadow-xs">
-                Open Chat &rarr;
-              </span>
-            </button>
-
             {/* Social Media Connect Buttons */}
             <div className="space-y-2.5 pt-2">
               <div className="text-center mb-1">
@@ -257,7 +237,7 @@ export default function FriendlyConnectScreen({
                     </div>
                     <div className="text-left">
                       <div className="font-extrabold text-[#2D3436]">Instagram Direct</div>
-                      <div className="text-xs text-[#636E72]">Direct message karein</div>
+                      <div className="text-xs text-[#FF6B6B] font-semibold">Instagram par baat karne ke liye yahan click karein</div>
                     </div>
                   </div>
                   <ExternalLink className="w-4 h-4 text-[#FF6B6B]" />
@@ -279,7 +259,7 @@ export default function FriendlyConnectScreen({
                     </div>
                     <div className="text-left">
                       <div className="font-extrabold text-[#2D3436]">Telegram Chat</div>
-                      <div className="text-xs text-[#636E72]">Friendly message bhejein</div>
+                      <div className="text-xs text-[#0088cc] font-semibold">Telegram par baat karne ke liye yahan click karein</div>
                     </div>
                   </div>
                   <ExternalLink className="w-4 h-4 text-[#0088cc]" />
@@ -301,7 +281,7 @@ export default function FriendlyConnectScreen({
                     </div>
                     <div className="text-left">
                       <div className="font-extrabold text-[#2D3436]">Snapchat Connect</div>
-                      <div className="text-xs text-[#636E72]">Add karke snaps share karein</div>
+                      <div className="text-xs text-[#b89500] font-semibold">Snapchat par baat karne ke liye yahan click karein</div>
                     </div>
                   </div>
                   <ExternalLink className="w-4 h-4 text-[#d4b106]" />
@@ -327,7 +307,7 @@ export default function FriendlyConnectScreen({
                     </div>
                     <div className="text-left">
                       <div className="font-extrabold text-[#2D3436]">WhatsApp Connect</div>
-                      <div className="text-xs text-[#636E72]">Direct register &amp; chat</div>
+                      <div className="text-xs text-[#16a34a] font-semibold">WhatsApp par baat karne ke liye yahan click karein</div>
                     </div>
                   </div>
                   <span className="bg-[#25D366] text-white text-[10px] font-black px-2.5 py-1 rounded-full uppercase shadow-2xs">

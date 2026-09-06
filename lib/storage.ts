@@ -52,25 +52,24 @@ export function initFirestoreListeners(): void {
   try {
     // 1. Sync Members
     onSnapshot(collection(db, 'members'), (snapshot) => {
-      if (!snapshot.empty) {
-        const loaded: Member[] = [];
-        snapshot.forEach(docSnap => {
-          loaded.push(docSnap.data() as Member);
-        });
-        cachedMembers = loaded;
-        cachedRawMembers = JSON.stringify(loaded);
-        try {
-          localStorage.setItem(STORAGE_KEY_MEMBERS, cachedRawMembers);
-        } catch (e) {
-          console.error(e);
+      const loaded: Member[] = [];
+      snapshot.forEach(docSnap => {
+        const data = docSnap.data() as Member;
+        // Purge any lingering mock members from Firestore permanently
+        if (data.id === 'mem_1' || data.id === 'mem_2' || data.id === 'mem_3') {
+          deleteDoc(doc(db, 'members', data.id)).catch(() => {});
+        } else {
+          loaded.push(data);
         }
-        window.dispatchEvent(new Event('members_updated'));
-      } else {
-        // Seed initial members to Firestore if collection is empty
-        INITIAL_MEMBERS.forEach(m => {
-          setDoc(doc(db, 'members', m.id), m).catch(() => {});
-        });
+      });
+      cachedMembers = loaded;
+      cachedRawMembers = JSON.stringify(loaded);
+      try {
+        localStorage.setItem(STORAGE_KEY_MEMBERS, cachedRawMembers);
+      } catch (e) {
+        console.error(e);
       }
+      window.dispatchEvent(new Event('members_updated'));
     }, (err) => {
       console.warn('Firestore members listener warning:', err);
     });
@@ -235,29 +234,34 @@ let cachedMembers: Member[] | null = null;
 let cachedRawMembers: string | null = null;
 
 function readMembersInternal(): Member[] {
-  if (typeof window === 'undefined') return INITIAL_MEMBERS;
+  if (typeof window === 'undefined') return [];
   initFirestoreListeners();
   try {
     const raw = localStorage.getItem(STORAGE_KEY_MEMBERS);
     if (!raw) {
-      localStorage.setItem(STORAGE_KEY_MEMBERS, JSON.stringify(INITIAL_MEMBERS));
-      cachedRawMembers = JSON.stringify(INITIAL_MEMBERS);
-      cachedMembers = INITIAL_MEMBERS;
-      return INITIAL_MEMBERS;
+      localStorage.setItem(STORAGE_KEY_MEMBERS, JSON.stringify([]));
+      cachedRawMembers = JSON.stringify([]);
+      cachedMembers = [];
+      return [];
     }
     if (raw === cachedRawMembers && cachedMembers) return cachedMembers;
     const parsed = JSON.parse(raw);
-    if (Array.isArray(parsed) && parsed.length > 0) {
-      cachedRawMembers = raw;
-      cachedMembers = parsed;
-      return parsed;
+    if (Array.isArray(parsed)) {
+      // Purge any lingering mock members
+      const clean = parsed.filter((m: Member) => m && m.id !== 'mem_1' && m.id !== 'mem_2' && m.id !== 'mem_3');
+      if (clean.length !== parsed.length) {
+        localStorage.setItem(STORAGE_KEY_MEMBERS, JSON.stringify(clean));
+      }
+      cachedRawMembers = JSON.stringify(clean);
+      cachedMembers = clean;
+      return clean;
     }
-    cachedRawMembers = raw;
-    cachedMembers = INITIAL_MEMBERS;
-    return INITIAL_MEMBERS;
+    cachedRawMembers = JSON.stringify([]);
+    cachedMembers = [];
+    return [];
   } catch (err) {
     console.error('Error reading members:', err);
-    return INITIAL_MEMBERS;
+    return [];
   }
 }
 
@@ -417,7 +421,7 @@ const subscribeMembers = (callback: () => void) => {
   return () => window.removeEventListener('members_updated', callback);
 };
 const getMembersSnapshot = () => readMembersInternal();
-const getMembersServerSnapshot = () => INITIAL_MEMBERS;
+const getMembersServerSnapshot = () => [];
 
 export function useMembers(): Member[] {
   return React.useSyncExternalStore(subscribeMembers, getMembersSnapshot, getMembersServerSnapshot);
@@ -564,41 +568,37 @@ export function useFriendlyConfig(): FriendlyPageConfig {
 }
 
 /* ------------------- WHATSAPP REGISTRATIONS STORE ------------------- */
-const INITIAL_WHATSAPP_LEADS: WhatsAppRegistration[] = [
-  {
-    id: 'wa_1',
-    name: 'Priya Sharma',
-    phone: '+91 98765 43210',
-    submittedAt: '2026-09-03 10:20 AM',
-    notes: 'Registered from Romantic Screen',
-  },
-];
+const INITIAL_WHATSAPP_LEADS: WhatsAppRegistration[] = [];
 
 let cachedWhatsApp: WhatsAppRegistration[] | null = null;
 let cachedRawWhatsApp: string | null = null;
 
 function readWhatsAppInternal(): WhatsAppRegistration[] {
-  if (typeof window === 'undefined') return INITIAL_WHATSAPP_LEADS;
+  if (typeof window === 'undefined') return [];
   initFirestoreListeners();
   try {
     const raw = localStorage.getItem(STORAGE_KEY_WHATSAPP);
     if (!raw) {
-      localStorage.setItem(STORAGE_KEY_WHATSAPP, JSON.stringify(INITIAL_WHATSAPP_LEADS));
-      cachedRawWhatsApp = JSON.stringify(INITIAL_WHATSAPP_LEADS);
-      cachedWhatsApp = INITIAL_WHATSAPP_LEADS;
-      return INITIAL_WHATSAPP_LEADS;
+      localStorage.setItem(STORAGE_KEY_WHATSAPP, JSON.stringify([]));
+      cachedRawWhatsApp = JSON.stringify([]);
+      cachedWhatsApp = [];
+      return [];
     }
     if (raw === cachedRawWhatsApp && cachedWhatsApp) return cachedWhatsApp;
     const parsed = JSON.parse(raw);
     if (Array.isArray(parsed)) {
-      cachedRawWhatsApp = raw;
-      cachedWhatsApp = parsed;
-      return parsed;
+      const clean = parsed.filter((w: WhatsAppRegistration) => w && w.id !== 'wa_1');
+      if (clean.length !== parsed.length) {
+        localStorage.setItem(STORAGE_KEY_WHATSAPP, JSON.stringify(clean));
+      }
+      cachedRawWhatsApp = JSON.stringify(clean);
+      cachedWhatsApp = clean;
+      return clean;
     }
-    return INITIAL_WHATSAPP_LEADS;
+    return [];
   } catch (err) {
     console.error('Error reading WhatsApp registrations:', err);
-    return INITIAL_WHATSAPP_LEADS;
+    return [];
   }
 }
 
@@ -667,7 +667,7 @@ const subscribeWhatsApp = (callback: () => void) => {
   return () => window.removeEventListener('whatsapp_leads_updated', callback);
 };
 const getWhatsAppSnapshot = () => readWhatsAppInternal();
-const getWhatsAppServerSnapshot = () => INITIAL_WHATSAPP_LEADS;
+const getWhatsAppServerSnapshot = () => [];
 
 export function useWhatsAppRegistrations(): WhatsAppRegistration[] {
   return React.useSyncExternalStore(subscribeWhatsApp, getWhatsAppSnapshot, getWhatsAppServerSnapshot);
@@ -678,27 +678,31 @@ let cachedChats: HelpChatMessage[] | null = null;
 let cachedRawChats: string | null = null;
 
 function readHelpChatsInternal(): HelpChatMessage[] {
-  if (typeof window === 'undefined') return INITIAL_HELP_CHATS;
+  if (typeof window === 'undefined') return [];
   initFirestoreListeners();
   try {
     const raw = localStorage.getItem(STORAGE_KEY_CHATS);
     if (!raw) {
-      localStorage.setItem(STORAGE_KEY_CHATS, JSON.stringify(INITIAL_HELP_CHATS));
-      cachedRawChats = JSON.stringify(INITIAL_HELP_CHATS);
-      cachedChats = INITIAL_HELP_CHATS;
-      return INITIAL_HELP_CHATS;
+      localStorage.setItem(STORAGE_KEY_CHATS, JSON.stringify([]));
+      cachedRawChats = JSON.stringify([]);
+      cachedChats = [];
+      return [];
     }
     if (raw === cachedRawChats && cachedChats) return cachedChats;
     const parsed = JSON.parse(raw);
     if (Array.isArray(parsed)) {
-      cachedRawChats = raw;
-      cachedChats = parsed;
-      return parsed;
+      const clean = parsed.filter((c: HelpChatMessage) => c && c.id !== 'msg_init_1' && c.id !== 'msg_init_2');
+      if (clean.length !== parsed.length) {
+        localStorage.setItem(STORAGE_KEY_CHATS, JSON.stringify(clean));
+      }
+      cachedRawChats = JSON.stringify(clean);
+      cachedChats = clean;
+      return clean;
     }
-    return INITIAL_HELP_CHATS;
+    return [];
   } catch (err) {
     console.error('Error reading help chats:', err);
-    return INITIAL_HELP_CHATS;
+    return [];
   }
 }
 
@@ -818,7 +822,7 @@ const subscribeHelpChats = (callback: () => void) => {
   return () => window.removeEventListener('help_chats_updated', callback);
 };
 const getHelpChatsSnapshot = () => readHelpChatsInternal();
-const getHelpChatsServerSnapshot = () => INITIAL_HELP_CHATS;
+const getHelpChatsServerSnapshot = () => [];
 
 export function useHelpChats(): HelpChatMessage[] {
   return React.useSyncExternalStore(subscribeHelpChats, getHelpChatsSnapshot, getHelpChatsServerSnapshot);

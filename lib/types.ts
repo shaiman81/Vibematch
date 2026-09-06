@@ -68,24 +68,7 @@ export interface HelpChatMessage {
   timestamp: string;
 }
 
-export const INITIAL_HELP_CHATS: HelpChatMessage[] = [
-  {
-    id: 'msg_init_1',
-    memberId: 'mem_1',
-    memberName: 'Priya Sharma',
-    sender: 'user',
-    text: 'Hello, mujhe aapka app bahut pasand aaya! Kaise connect karein?',
-    timestamp: '10:25 AM',
-  },
-  {
-    id: 'msg_init_2',
-    memberId: 'mem_1',
-    memberName: 'Priya Sharma',
-    sender: 'admin',
-    text: 'Namaste Priya ji! Welcome! Aap WhatsApp ya Instagram par seedhe message kar sakti hain.',
-    timestamp: '10:28 AM',
-  },
-];
+export const INITIAL_HELP_CHATS: HelpChatMessage[] = [];
 
 export const DEFAULT_FRIENDLY_CONFIG: FriendlyPageConfig = {
   optionTitle: 'Acha & Friendly Baatein',
@@ -174,32 +157,4 @@ export const AVAILABLE_TOPICS: ConversationTopic[] = [
   },
 ];
 
-export const INITIAL_MEMBERS: Member[] = [
-  {
-    id: 'mem_1',
-    name: 'Priya Sharma',
-    age: 21,
-    interests: ['Dil Ki Baatein & Feelings', 'Late Night Deep Talks', 'Romantic & Sweet Baatein'],
-    registeredAt: '2026-09-03 10:15 AM',
-    status: 'New',
-    note: 'Special interest in deep late night talks',
-  },
-  {
-    id: 'mem_2',
-    name: 'Ananya Verma',
-    age: 23,
-    interests: ['Fun, Masti & Casual Gupshup', 'Daily Life & Routine Sharing'],
-    registeredAt: '2026-09-02 08:45 PM',
-    status: 'Connected',
-    note: 'Loves friendly casual conversations',
-  },
-  {
-    id: 'mem_3',
-    name: 'Simran Kaur',
-    age: 20,
-    interests: ['Care & Emotional Support', 'Dil Ki Baatein & Feelings'],
-    registeredAt: '2026-09-01 04:30 PM',
-    status: 'Pending',
-    note: 'Wants someone to listen and care',
-  },
-];
+export const INITIAL_MEMBERS: Member[] = [];

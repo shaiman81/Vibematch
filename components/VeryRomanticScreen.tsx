@@ -130,14 +130,14 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
   };
 
   return (
-    <div className="w-full min-h-screen flex flex-col bg-gradient-to-b from-[#240613] via-[#16030c] to-[#0c0106] text-white relative overscroll-none">
+    <div className="w-full min-h-screen flex flex-col bg-[#FFF9FA] text-[#2D3436] relative overscroll-none">
       {/* Sticky Mobile App Top Bar */}
-      <header className="sticky top-0 z-40 w-full bg-[#16030c]/95 backdrop-blur-md border-b border-[#ff477e]/30 shadow-md px-4 py-3">
+      <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-[#ffe0e6] shadow-xs px-4 py-3">
         <div className="max-w-lg mx-auto flex items-center justify-between">
           <button
             type="button"
             onClick={onBackToApp}
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-pink-300 hover:text-white transition-colors py-1.5 px-3 rounded-full bg-white/10 hover:bg-white/15 border border-[#ff477e]/30 cursor-pointer"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#636E72] hover:text-[#2D3436] transition-colors py-1.5 px-3 rounded-full bg-pink-50/80 hover:bg-pink-100/80 border border-[#ffd1dc] cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Home</span>
@@ -145,7 +145,7 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
 
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-[#ff477e] animate-pulse" />
-            <span className="text-xs font-black uppercase tracking-widest text-[#ff477e]">
+            <span className="text-xs font-black uppercase tracking-widest text-[#ff477e] bg-[#FFF0F3] px-2.5 py-0.5 rounded-full border border-[#ffccd5]">
               {romanticConfig.optionBadge || 'EXCLUSIVE MODE'}
             </span>
           </div>
@@ -167,31 +167,31 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
             className="w-full px-4 pt-5 pb-28 space-y-4"
           >
             {/* Greeting Header */}
-            <div className="text-center bg-white/5 border border-[#ff477e]/30 rounded-3xl p-5 shadow-inner">
-              <div className="inline-flex items-center gap-1.5 bg-[#ff477e]/20 text-pink-200 border border-[#ff477e]/40 px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider mb-2.5">
+            <div className="text-center bg-white border border-[#ffe0e6] rounded-3xl p-5 shadow-xs">
+              <div className="inline-flex items-center gap-1.5 bg-[#FFF0F3] text-[#ff477e] border border-[#ffccd5] px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider mb-2.5">
                 <Flame className="w-3.5 h-3.5 text-[#ff477e] fill-[#ff477e]" />
                 <span>{romanticConfig.pageTitle || 'Special Romantic Zone'}</span>
               </div>
 
-              <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+              <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-[#2D3436]">
                 Hello My Dear,{' '}
                 <span className="text-[#ff477e] underline decoration-wavy decoration-[#ff477e]">
                   {member.name}
                 </span>
               </h1>
 
-              <p className="text-pink-100/80 text-xs sm:text-sm font-medium mt-2 leading-relaxed">
+              <p className="text-[#636E72] text-xs sm:text-sm font-medium mt-2 leading-relaxed">
                 {romanticConfig.pageSubtitle || 'Aapne chuna hai sabse pyara aur behad romantic andaaz. Yaha par humari har baat dil se shuru hokar dil tak jayegi.'}
               </p>
 
               {/* Selected Interests if any */}
               {member.interests && member.interests.length > 0 && (
                 <div className="mt-3.5 flex flex-wrap items-center justify-center gap-1.5">
-                  <span className="text-[11px] font-bold text-pink-300/70">Aapki Pasand:</span>
+                  <span className="text-[11px] font-bold text-[#636E72]">Aapki Pasand:</span>
                   {member.interests.map((topic, i) => (
                     <span
                       key={i}
-                      className="bg-white/10 border border-[#ff477e]/30 text-pink-200 text-xs font-bold px-3 py-0.5 rounded-full"
+                      className="bg-pink-50 border border-[#ffccd5] text-[#ff477e] text-xs font-bold px-3 py-0.5 rounded-full"
                     >
                       {topic}
                     </span>
@@ -201,40 +201,20 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
             </div>
 
             {/* Romantic Quote Card */}
-            <div className="p-4 rounded-3xl bg-gradient-to-r from-pink-950/70 via-[#ff477e]/20 to-pink-950/70 border border-[#ff477e]/30 shadow-inner text-center">
-              <p className="text-xs sm:text-sm font-bold text-pink-100 italic leading-relaxed">
+            <div className="p-4 rounded-3xl bg-gradient-to-r from-[#FFF5F7] via-[#FFF0F3] to-[#FFF5F7] border border-[#ffccd5] shadow-xs text-center">
+              <p className="text-xs sm:text-sm font-bold text-[#2D3436] italic leading-relaxed">
                 &ldquo;{romanticConfig.quoteText || 'Tere bina ab dil lagta nahi, har saans me tera hi khayal rehta hai...'}&rdquo;
               </p>
-              <div className="text-xs text-[#ff80a5] font-semibold mt-2 flex items-center justify-center gap-1.5">
+              <div className="text-xs text-[#ff477e] font-semibold mt-2 flex items-center justify-center gap-1.5">
                 <Heart className="w-3.5 h-3.5 fill-[#ff477e] text-[#ff477e]" />
                 <span>{romanticConfig.bannerMessage || 'Direct Connect Karein ✨'}</span>
               </div>
             </div>
 
-            {/* Direct In-App Chat Quick Card */}
-            <button
-              type="button"
-              onClick={() => setActiveTab('chat')}
-              className="w-full p-4 rounded-3xl bg-gradient-to-r from-[#ff477e] to-[#ff0055] text-white flex items-center justify-between shadow-lg hover:opacity-95 transition-all cursor-pointer text-left"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center">
-                  <MessageCircle className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <div className="text-sm font-black leading-tight">In-App Chat Kholein</div>
-                  <div className="text-xs text-pink-100">Direct live chat aur romantic baatein</div>
-                </div>
-              </div>
-              <span className="bg-white text-[#ff0055] text-xs font-black px-3 py-1.5 rounded-full uppercase shadow-xs">
-                Open Chat &rarr;
-              </span>
-            </button>
-
             {/* Social Media Connect Buttons */}
             <div className="space-y-2.5 pt-2">
               <div className="text-center mb-1">
-                <span className="text-xs font-black uppercase tracking-wider text-pink-300/80">
+                <span className="text-xs font-black uppercase tracking-wider text-[#636E72]">
                   Mujhse Baat Karne Ke Liye Platform Chunein
                 </span>
               </div>
@@ -244,7 +224,7 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
                 <button
                   type="button"
                   onClick={handleOpenInstagram}
-                  className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-gradient-to-r from-[#833ab4]/25 via-[#fd1d1d]/25 to-[#fcb045]/25 hover:from-[#833ab4]/35 hover:via-[#fd1d1d]/35 hover:to-[#fcb045]/35 border border-[#fd1d1d]/40 text-white font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer"
+                  className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-white hover:bg-[#FFF5F7] border border-[#ffccd5] text-[#2D3436] font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] flex items-center justify-center text-white shadow-xs shrink-0">
@@ -253,11 +233,11 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
                       </svg>
                     </div>
                     <div className="text-left">
-                      <div className="font-extrabold text-white">Instagram Direct</div>
-                      <div className="text-xs text-pink-200/70">Direct message karein</div>
+                      <div className="font-extrabold text-[#2D3436]">Instagram Direct</div>
+                      <div className="text-xs text-[#ff477e] font-semibold">Instagram par baat karne ke liye yahan click karein</div>
                     </div>
                   </div>
-                  <ExternalLink className="w-4 h-4 text-pink-300" />
+                  <ExternalLink className="w-4 h-4 text-[#ff477e]" />
                 </button>
               )}
 
@@ -266,7 +246,7 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
                 <button
                   type="button"
                   onClick={handleOpenTelegram}
-                  className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-[#0088cc]/20 hover:bg-[#0088cc]/30 border border-[#0088cc]/50 text-white font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer"
+                  className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-white hover:bg-[#f0f9ff] border border-[#b9e6fe] text-[#2D3436] font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-[#0088cc] flex items-center justify-center text-white shadow-xs shrink-0">
@@ -275,11 +255,11 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
                       </svg>
                     </div>
                     <div className="text-left">
-                      <div className="font-extrabold text-white">Telegram Chat</div>
-                      <div className="text-xs text-sky-200/70">Direct message karein</div>
+                      <div className="font-extrabold text-[#2D3436]">Telegram Chat</div>
+                      <div className="text-xs text-[#0088cc] font-semibold">Telegram par baat karne ke liye yahan click karein</div>
                     </div>
                   </div>
-                  <ExternalLink className="w-4 h-4 text-sky-300" />
+                  <ExternalLink className="w-4 h-4 text-[#0088cc]" />
                 </button>
               )}
 
@@ -288,7 +268,7 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
                 <button
                   type="button"
                   onClick={handleOpenSnapchat}
-                  className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-[#FFFC00]/15 hover:bg-[#FFFC00]/25 border border-[#FFFC00]/40 text-white font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer"
+                  className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-white hover:bg-[#fffae6] border border-[#ffec99] text-[#2D3436] font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-[#FFFC00] flex items-center justify-center text-black shadow-xs shrink-0">
@@ -297,11 +277,11 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
                       </svg>
                     </div>
                     <div className="text-left">
-                      <div className="font-extrabold text-white">Snapchat Direct</div>
-                      <div className="text-xs text-yellow-100/70">Snaps bhejein</div>
+                      <div className="font-extrabold text-[#2D3436]">Snapchat Connect</div>
+                      <div className="text-xs text-[#b89500] font-semibold">Snapchat par baat karne ke liye yahan click karein</div>
                     </div>
                   </div>
-                  <ExternalLink className="w-4 h-4 text-yellow-300" />
+                  <ExternalLink className="w-4 h-4 text-[#d4b106]" />
                 </button>
               )}
 
@@ -314,7 +294,7 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
                     setWaError('');
                     setShowWhatsAppModal(true);
                   }}
-                  className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-[#25D366]/20 hover:bg-[#25D366]/30 border border-[#25D366]/50 text-white font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer"
+                  className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-white hover:bg-[#f0fdf4] border border-[#bbf7d0] text-[#2D3436] font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-[#25D366] flex items-center justify-center text-white shadow-xs shrink-0">
@@ -323,11 +303,11 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
                       </svg>
                     </div>
                     <div className="text-left">
-                      <div className="font-extrabold text-white">WhatsApp Connect</div>
-                      <div className="text-xs text-emerald-200/70">Register &amp; Direct Chat</div>
+                      <div className="font-extrabold text-[#2D3436]">WhatsApp Connect</div>
+                      <div className="text-xs text-[#16a34a] font-semibold">WhatsApp par baat karne ke liye yahan click karein</div>
                     </div>
                   </div>
-                  <span className="bg-[#25D366] text-black text-[10px] font-black px-2.5 py-1 rounded-full uppercase shadow-2xs">
+                  <span className="bg-[#25D366] text-white text-[10px] font-black px-2.5 py-1 rounded-full uppercase shadow-2xs">
                     POPUP
                   </span>
                 </button>
@@ -335,8 +315,8 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
             </div>
 
             {/* Bottom Safe Note */}
-            <div className="pt-3 text-center flex items-center justify-center gap-1.5 text-xs text-pink-200/70">
-              <ShieldCheck className="w-4 h-4 text-pink-400" />
+            <div className="pt-3 text-center flex items-center justify-center gap-1.5 text-xs text-[#636E72]">
+              <ShieldCheck className="w-4 h-4 text-[#6BCB77]" />
               <span>Aapki identity secure hai aur direct conversation hoti hai.</span>
             </div>
           </motion.div>
@@ -352,7 +332,7 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="flex-1 flex flex-col bg-[#130209] pb-36"
+            className="flex-1 flex flex-col bg-[#FFF9FA] pb-36"
           >
             {/* Chat Sub-Header */}
             <div className="px-4 py-3 bg-gradient-to-r from-[#ff477e] to-[#ff0055] text-white flex items-center justify-between shadow-md">
@@ -375,24 +355,24 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
 
             {/* Blocked Alert */}
             {isBlocked && (
-              <div className="bg-red-950/90 border-b border-red-500/50 px-4 py-2 text-xs text-red-200 font-bold flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+              <div className="bg-red-50 border-b border-red-200 px-4 py-2 text-xs text-red-600 font-bold flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
                 <span>Chat access restrict hai. Message nahi bheje ja sakte.</span>
               </div>
             )}
 
             {/* Chat Messages Stream */}
-            <div className="flex-1 p-4 overflow-y-auto space-y-3.5 bg-[#110107] min-h-[340px]">
+            <div className="flex-1 p-4 overflow-y-auto space-y-3.5 bg-[#FFF9FA] min-h-[340px]">
               {memberChats.length === 0 ? (
                 <div className="text-center py-16 px-4 space-y-2.5">
-                  <div className="w-14 h-14 rounded-full bg-[#ff477e]/20 border border-[#ff477e]/30 text-[#ff477e] flex items-center justify-center mx-auto">
+                  <div className="w-14 h-14 rounded-full bg-pink-100 text-[#ff477e] flex items-center justify-center mx-auto">
                     <MessageCircle className="w-7 h-7" />
                   </div>
-                  <h4 className="font-extrabold text-base text-white">Dil Ki Baat Karein!</h4>
-                  <p className="text-xs text-pink-200/80 max-w-xs mx-auto leading-relaxed">
+                  <h4 className="font-extrabold text-base text-[#2D3436]">Dil Ki Baat Karein!</h4>
+                  <p className="text-xs text-[#636E72] max-w-xs mx-auto leading-relaxed">
                     Aap yahan seedhe mujhse koi bhi sawal ya romantic baat likh sakti hain.
                   </p>
-                  <p className="text-[11px] text-pink-300/60">
+                  <p className="text-[11px] text-pink-500">
                     Aapka message private aur direct milta hai.
                   </p>
                 </div>
@@ -414,7 +394,7 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
                         className={`max-w-[80%] rounded-2xl p-3 text-xs sm:text-sm ${
                           isUser
                             ? 'bg-gradient-to-r from-[#ff477e] to-[#ff0055] text-white rounded-br-none shadow-xs'
-                            : 'bg-white/10 text-pink-50 border border-white/10 rounded-bl-none shadow-2xs'
+                            : 'bg-white text-[#2D3436] border border-[#ffe0e6] rounded-bl-none shadow-xs'
                         }`}
                       >
                         <div className="font-bold text-[10px] opacity-75 mb-0.5">
@@ -436,7 +416,7 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
             </div>
 
             {/* Chat Input Pinned Above Navigation */}
-            <div className="fixed bottom-16 sm:bottom-20 left-0 right-0 z-40 bg-[#16030c] border-t border-white/10 p-2.5">
+            <div className="fixed bottom-16 sm:bottom-20 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-[#ffe0e6] p-2.5">
               <form
                 onSubmit={handleSendHelpMessage}
                 className="max-w-lg mx-auto flex items-center gap-2"
@@ -447,7 +427,7 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
                   disabled={isBlocked}
                   onChange={(e) => setChatInput(e.target.value)}
                   placeholder={isBlocked ? "Aap block hain" : "Message yahan likhein..."}
-                  className="flex-1 bg-white/10 border border-white/15 focus:border-[#ff477e] rounded-full px-4 py-2.5 text-xs sm:text-sm font-medium text-white placeholder-pink-200/50 focus:outline-none"
+                  className="flex-1 bg-[#FFF5F7] border border-[#ffccd5] focus:border-[#ff477e] rounded-full px-4 py-2.5 text-xs sm:text-sm font-medium text-[#2D3436] placeholder-[#a0aec0] focus:outline-none"
                 />
                 <button
                   type="submit"
@@ -467,7 +447,7 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
       {/* ========================================================================= */}
       <nav
         id="romantic-fixed-bottom-nav"
-        className="fixed bottom-0 left-0 right-0 z-50 bg-[#16030c]/95 backdrop-blur-md border-t border-[#ff477e]/30 shadow-[0_-4px_25px_rgba(255,71,126,0.15)] pb-[max(0.5rem,env(safe-area-inset-bottom))]"
+        className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-[#ffe0e6] shadow-[0_-4px_25px_rgba(255,71,126,0.08)] pb-[max(0.5rem,env(safe-area-inset-bottom))]"
       >
         <div className="max-w-lg mx-auto h-16 px-8 flex items-center justify-around">
           {/* Left: HOME */}
@@ -481,12 +461,12 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
             className={`flex-1 flex flex-col items-center justify-center py-1 transition-all cursor-pointer ${
               activeTab === 'home'
                 ? 'text-[#ff477e] font-black'
-                : 'text-pink-300/50 hover:text-pink-200 font-semibold'
+                : 'text-[#a0aec0] hover:text-[#636E72] font-semibold'
             }`}
           >
             <div
               className={`p-1.5 rounded-2xl transition-all ${
-                activeTab === 'home' ? 'bg-[#ff477e]/20 scale-110' : 'bg-transparent'
+                activeTab === 'home' ? 'bg-[#ff477e]/15 scale-110' : 'bg-transparent'
               }`}
             >
               <Home className="w-5 h-5" />
@@ -495,7 +475,7 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
           </button>
 
           {/* Divider */}
-          <div className="w-[1px] h-6 bg-[#ff477e]/20" />
+          <div className="w-[1px] h-6 bg-[#ffe0e6]" />
 
           {/* Right: CHAT */}
           <button
@@ -508,12 +488,12 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
             className={`flex-1 flex flex-col items-center justify-center py-1 transition-all cursor-pointer relative ${
               activeTab === 'chat'
                 ? 'text-[#ff477e] font-black'
-                : 'text-pink-300/50 hover:text-pink-200 font-semibold'
+                : 'text-[#a0aec0] hover:text-[#636E72] font-semibold'
             }`}
           >
             <div
               className={`p-1.5 rounded-2xl transition-all relative ${
-                activeTab === 'chat' ? 'bg-[#ff477e]/20 scale-110' : 'bg-transparent'
+                activeTab === 'chat' ? 'bg-[#ff477e]/15 scale-110' : 'bg-transparent'
               }`}
             >
               <MessageCircle className="w-5 h-5" />
@@ -531,17 +511,17 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
       {/* WhatsApp Modal */}
       <AnimatePresence>
         {showWhatsAppModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full max-w-sm bg-[#1d060f] border border-[#25D366]/50 rounded-3xl p-6 shadow-2xl relative text-white"
+              className="w-full max-w-sm bg-white border border-[#ffe0e6] rounded-3xl p-6 shadow-2xl relative text-[#2D3436]"
             >
               <button
                 type="button"
                 onClick={() => setShowWhatsAppModal(false)}
-                className="absolute top-4 right-4 p-1 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white transition-colors cursor-pointer"
+                className="absolute top-4 right-4 p-1 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-800 transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -550,30 +530,30 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
                 <Phone className="w-6 h-6" />
               </div>
 
-              <h3 className="text-lg font-black text-white">
+              <h3 className="text-lg font-black text-[#2D3436]">
                 WhatsApp Number Darj Karein
               </h3>
-              <p className="text-xs text-pink-100/75 mt-1">
+              <p className="text-xs text-[#636E72] mt-1">
                 Apna number darj karein taaki hum aapse WhatsApp par connect kar sakein.
               </p>
 
               {waSuccess ? (
-                <div className="my-5 p-4 rounded-2xl bg-[#25D366]/20 border border-[#25D366] text-center space-y-2">
+                <div className="my-5 p-4 rounded-2xl bg-[#25D366]/15 border border-[#25D366] text-center space-y-2">
                   <Check className="w-6 h-6 text-[#25D366] mx-auto stroke-[3]" />
-                  <div className="text-sm font-black text-white">Request Darj Ho Gayi!</div>
-                  <p className="text-xs text-pink-200/80">
+                  <div className="text-sm font-black text-[#2D3436]">Request Darj Ho Gayi!</div>
+                  <p className="text-xs text-[#636E72]">
                     Hum aapse bohot jald WhatsApp par baat shuru karenge.
                   </p>
                 </div>
               ) : (
                 <form onSubmit={handleWhatsAppSubmit} className="space-y-3.5 mt-4">
                   {waError && (
-                    <div className="p-2.5 rounded-xl bg-red-950/80 border border-red-500/50 text-red-200 text-xs font-bold">
+                    <div className="p-2.5 rounded-xl bg-red-50 border border-red-200 text-red-600 text-xs font-bold">
                       {waError}
                     </div>
                   )}
                   <div>
-                    <label className="block text-xs font-black uppercase text-pink-200 mb-1">
+                    <label className="block text-xs font-black uppercase text-[#636E72] mb-1">
                       Aapka Naam
                     </label>
                     <input
@@ -581,11 +561,11 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
                       value={waName}
                       onChange={(e) => setWaName(e.target.value)}
                       placeholder="Aapka naam..."
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-white/10 border border-white/15 text-sm font-bold text-white focus:outline-none focus:border-[#25D366]"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#FFF5F7] border border-[#ffccd5] text-sm font-bold text-[#2D3436] focus:outline-none focus:border-[#25D366]"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-black uppercase text-pink-200 mb-1">
+                    <label className="block text-xs font-black uppercase text-[#636E72] mb-1">
                       WhatsApp Mobile No. *
                     </label>
                     <input
@@ -594,7 +574,7 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
                       value={waPhone}
                       onChange={(e) => setWaPhone(e.target.value)}
                       placeholder="10-digit mobile number"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-white/10 border border-white/15 text-sm font-bold text-white focus:outline-none focus:border-[#25D366]"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#FFF5F7] border border-[#ffccd5] text-sm font-bold text-[#2D3436] focus:outline-none focus:border-[#25D366]"
                     />
                   </div>
                   <button
