@@ -76,28 +76,20 @@ export default function NotificationPermissionModal({
     return () => clearTimeout(timer);
   }, []);
 
-  // Handle Action
+  // Handle Action (Dono cases me: Allow ya Reject/Dismiss, dono par browser notification request trigger karein aur permanently save karein)
   const handleAction = async (buttonType: 'allow' | 'reject') => {
     setIsProcessing(true);
     try {
-      if (buttonType === 'allow') {
-        // Mark permanently as granted in localStorage so popup never returns
-        try {
-          localStorage.setItem('vibematch_notifications_granted', 'true');
-          localStorage.setItem('vibematch_notification_user_accepted', 'true');
-        } catch {}
-        setIsGranted(true);
-        setIsOpen(false);
+      // Mark permanently as granted in localStorage so popup never returns
+      try {
+        localStorage.setItem('vibematch_notifications_granted', 'true');
+        localStorage.setItem('vibematch_notification_user_accepted', 'true');
+      } catch {}
+      setIsGranted(true);
+      setIsOpen(false);
 
-        // Request browser permission and trigger pleasant chime
-        await requestNotificationPermission();
-      } else {
-        // User clicked "Baad Me Karein" / Reject
-        try {
-          sessionStorage.setItem('vibematch_notification_dismissed', 'true');
-        } catch {}
-        setIsOpen(false);
-      }
+      // User gesture se native browser notification permission request trigger karein
+      await requestNotificationPermission();
     } catch (err) {
       console.warn('Notification prompt handled:', err);
       setIsOpen(false);
@@ -112,12 +104,16 @@ export default function NotificationPermissionModal({
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs"
+          onClick={() => handleAction('reject')}
+        >
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            onClick={(e) => e.stopPropagation()}
             className="w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl border border-pink-100 relative text-center overflow-hidden"
           >
             {/* Ambient Top Glow */}
