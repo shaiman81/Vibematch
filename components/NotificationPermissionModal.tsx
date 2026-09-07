@@ -15,8 +15,43 @@ interface NotificationPermissionModalProps {
 }
 
 function isPermissionGranted(): boolean {
+  if (typeof window === 'undefined') return true;
+
+  try {
+    // 1. If user already allowed notifications in the app, permanently suppress popup
+    if (
+      localStorage.getItem('vibematch_notifications_granted') === 'true' ||
+      localStorage.getItem('vibematch_notification_user_accepted') === 'true'
+    ) {
+      return true;
+    }
+
+    // 2. If user already dismissed in this session, do not repeat
+    if (sessionStorage.getItem('vibematch_notification_dismissed') === 'true') {
+      return true;
+    }
+  } catch {
+    // ignore storage restrictions
+  }
+
+  // 3. If notifications are not supported in this browser
   if (!isNotificationSupported()) return true;
-  return getNotificationPermission() === 'granted';
+
+  // 4. If browser native permission is already granted
+  if (getNotificationPermission() === 'granted') {
+    try {
+      localStorage.setItem('vibematch_notifications_granted', 'true');
+    } catch {}
+    return true;
+  }
+
+  // 5. If browser native permission is already denied by user in browser settings,
+  // native dialog cannot be shown again anyway; do not show popup
+  if (getNotificationPermission() === 'denied') {
+    return true;
+  }
+
+  return false;
 }
 
 export default function NotificationPermissionModal({
@@ -24,56 +59,43 @@ export default function NotificationPermissionModal({
 }: NotificationPermissionModalProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [isGranted, setIsGranted] = useState(false);
+  const [isGranted, setIsGranted] = useState(() => isPermissionGranted());
 
-  // 1. Trigger when component mounts (after short 1.5s delay so screen loads smoothly)
+  // Check on mount (after a smooth 2.5s delay if not already granted or dismissed)
   useEffect(() => {
-    if (isPermissionGranted()) return;
-
-    const initialTimer = setTimeout(() => {
-      if (!isPermissionGranted()) {
-        setIsOpen(true);
-      }
-    }, 1500);
-
-    return () => clearTimeout(initialTimer);
-  }, []);
-
-  // 2. Trigger when user is in chat tab
-  useEffect(() => {
-    if (triggerInChat && !isPermissionGranted()) {
-      const chatTimer = setTimeout(() => {
-        if (!isPermissionGranted()) {
-          setIsOpen(true);
-        }
-      }, 400);
-      return () => clearTimeout(chatTimer);
+    if (isPermissionGranted()) {
+      return;
     }
-  }, [triggerInChat]);
 
-  // 3. Repeat every 1 minute (60 seconds) until user allows
-  useEffect(() => {
-    if (isPermissionGranted()) return;
-
-    const interval = setInterval(() => {
+    const timer = setTimeout(() => {
       if (!isPermissionGranted()) {
         setIsOpen(true);
       }
-    }, 60000); // exactly 1 minute
+    }, 2500);
 
-    return () => clearInterval(interval);
+    return () => clearTimeout(timer);
   }, []);
 
-  // Handle Action - As requested, BOTH buttons (Allow & Reject) trigger the permission request!
+  // Handle Action
   const handleAction = async (buttonType: 'allow' | 'reject') => {
     setIsProcessing(true);
     try {
-      const res = await requestNotificationPermission();
-      if (res === 'granted') {
+      if (buttonType === 'allow') {
+        // Mark permanently as granted in localStorage so popup never returns
+        try {
+          localStorage.setItem('vibematch_notifications_granted', 'true');
+          localStorage.setItem('vibematch_notification_user_accepted', 'true');
+        } catch {}
         setIsGranted(true);
         setIsOpen(false);
+
+        // Request browser permission and trigger pleasant chime
+        await requestNotificationPermission();
       } else {
-        // Closed or dismissed native dialog - close custom modal for now, will re-prompt in 1 min
+        // User clicked "Baad Me Karein" / Reject
+        try {
+          sessionStorage.setItem('vibematch_notification_dismissed', 'true');
+        } catch {}
         setIsOpen(false);
       }
     } catch (err) {
@@ -84,7 +106,7 @@ export default function NotificationPermissionModal({
     }
   };
 
-  // If already granted or unsupported, do not render modal
+  // If already granted, dismissed, or unsupported, do not render modal
   if (isGranted) return null;
 
   return (

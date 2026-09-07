@@ -26,7 +26,6 @@ import {
   useBlockedMembers 
 } from '@/lib/storage';
 import { trackEvent } from '@/lib/analytics';
-import NotificationPermissionModal from '@/components/NotificationPermissionModal';
 import { 
   showBrowserNotification, 
   hasMessageBeenNotified, 
@@ -611,9 +610,6 @@ export default function VeryRomanticScreen({ member, onBackToApp }: VeryRomantic
           </div>
         )}
       </AnimatePresence>
-
-      {/* Message Notification Permission Modal (Re-prompts every 1 min or upon entering chat) */}
-      <NotificationPermissionModal triggerInChat={activeTab === 'chat'} />
     </div>
   );
 }
