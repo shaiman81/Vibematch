@@ -93,36 +93,108 @@ export async function requestNotificationPermission(): Promise<NotificationPermi
   }
 }
 
-// Display notification
-export async function showBrowserNotification(title: string, options?: NotificationOptions) {
-  if (!isNotificationSupported() || Notification.permission !== 'granted') {
-    return;
+// Flashing tab title helper
+let originalTitle = '';
+let titleInterval: ReturnType<typeof setInterval> | null = null;
+
+export function flashTabTitle(messageText: string, sender: string = 'Special One ❤️') {
+  if (typeof document === 'undefined') return;
+  if (!originalTitle) {
+    originalTitle = document.title || 'VibeMatch';
+  }
+  
+  if (titleInterval) {
+    clearInterval(titleInterval);
   }
 
-  // Play audio chime
+  let count = 0;
+  titleInterval = setInterval(() => {
+    count++;
+    if (count > 12) {
+      if (titleInterval) clearInterval(titleInterval);
+      document.title = originalTitle;
+      return;
+    }
+    document.title = count % 2 === 1 
+      ? `(1) 💌 ${sender}: ${messageText.slice(0, 24)}...`
+      : originalTitle;
+  }, 1200);
+
+  const resetOnFocus = () => {
+    if (titleInterval) clearInterval(titleInterval);
+    document.title = originalTitle;
+    window.removeEventListener('focus', resetOnFocus);
+  };
+  window.addEventListener('focus', resetOnFocus);
+}
+
+// Display notification
+export async function showBrowserNotification(title: string, options?: NotificationOptions) {
+  if (typeof window === 'undefined') return;
+
+  // Always trigger audio chime
   playNotificationChime();
+
+  if (!isNotificationSupported()) return;
 
   const defaultOptions: NotificationOptions = {
     icon: '/favicon.ico',
     badge: '/favicon.ico',
-    tag: 'vibematch-message',
+    tag: 'vibematch-special-one',
+    requireInteraction: true,
     ...options,
   };
 
-  try {
-    if ('serviceWorker' in navigator) {
-      const reg = await navigator.serviceWorker.getRegistration();
-      if (reg && reg.showNotification) {
-        await reg.showNotification(title, defaultOptions);
-        return;
+  if (Notification.permission === 'granted') {
+    try {
+      if ('serviceWorker' in navigator) {
+        try {
+          const reg = await navigator.serviceWorker.getRegistration();
+          if (reg && reg.showNotification) {
+            await reg.showNotification(title, defaultOptions);
+            return;
+          }
+        } catch (swErr) {
+          console.warn('SW notification fallback:', swErr);
+        }
       }
-    }
 
-    // Standard Desktop / In-browser Fallback
-    new Notification(title, defaultOptions);
-  } catch (err) {
-    console.warn('Failed to display native notification:', err);
+      // Standard Desktop / In-browser Fallback
+      new Notification(title, defaultOptions);
+    } catch (err) {
+      console.warn('Failed to display native notification:', err);
+    }
   }
+}
+
+// Global trigger for incoming message from Special One
+export async function triggerIncomingMessageNotification(
+  senderName: string = 'Special One ❤️',
+  text: string,
+  msgId: string
+) {
+  if (typeof window === 'undefined') return;
+  if (hasMessageBeenNotified(msgId)) return;
+  markMessageAsNotified(msgId);
+
+  // 1. Play audio chime
+  playNotificationChime();
+
+  // 2. Flash tab title
+  flashTabTitle(text, senderName);
+
+  // 3. Show native browser push notification
+  await showBrowserNotification(senderName, {
+    body: text,
+    tag: `vibematch-msg-${msgId}`,
+  });
+
+  // 4. Dispatch in-app toast event
+  window.dispatchEvent(
+    new CustomEvent('vibematch_incoming_special_message', {
+      detail: { senderName, text, msgId },
+    })
+  );
 }
 
 // Check if message was already notified

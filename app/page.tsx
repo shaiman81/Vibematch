@@ -9,6 +9,7 @@ import VeryRomanticScreen from '@/components/VeryRomanticScreen';
 import FriendlyConnectScreen from '@/components/FriendlyConnectScreen';
 import LegalModals, { LegalModalType } from '@/components/LegalModals';
 import NotificationPermissionModal from '@/components/NotificationPermissionModal';
+import GlobalMessageNotifier from '@/components/GlobalMessageNotifier';
 import { useActiveUser, clearActiveUserSession } from '@/lib/storage';
 import { trackEvent } from '@/lib/analytics';
 
@@ -42,22 +43,32 @@ export default function HomePage() {
   // Full-screen native mobile app views for Friendly Connect and Very Romantic screens
   if (currentView === 'friendly_connect' && activeUser) {
     return (
-      <main className="w-full min-h-screen bg-[#FFF9FA]">
+      <main className="w-full min-h-screen bg-[#FFF9FA] relative">
         <FriendlyConnectScreen
           member={activeUser}
           onBackToApp={() => setViewOverride('landing')}
         />
+        <GlobalMessageNotifier
+          activeUserId={activeUser.id}
+          currentView={currentView}
+        />
+        <NotificationPermissionModal />
       </main>
     );
   }
 
   if (currentView === 'very_romantic' && activeUser) {
     return (
-      <main className="w-full min-h-screen bg-[#FFF9FA]">
+      <main className="w-full min-h-screen bg-[#FFF9FA] relative">
         <VeryRomanticScreen
           member={activeUser}
           onBackToApp={() => setViewOverride('landing')}
         />
+        <GlobalMessageNotifier
+          activeUserId={activeUser.id}
+          currentView={currentView}
+        />
+        <NotificationPermissionModal />
       </main>
     );
   }
@@ -356,6 +367,17 @@ export default function HomePage() {
       <LegalModals
         activeModal={activeLegalModal}
         onClose={() => setActiveLegalModal(null)}
+      />
+
+      {/* Global Real-time Message Notifier (Works cross-tab and in background) */}
+      <GlobalMessageNotifier
+        activeUserId={activeUser?.id}
+        currentView={currentView}
+        onOpenChat={() => {
+          if (activeUser) {
+            setViewOverride(activeUser.mode === 'very_romantic' ? 'very_romantic' : 'friendly_connect');
+          }
+        }}
       />
 
       {/* Message Notification Permission Modal */}

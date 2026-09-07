@@ -26,7 +26,7 @@ import {
 } from '@/lib/storage';
 import { trackEvent } from '@/lib/analytics';
 import { 
-  showBrowserNotification, 
+  triggerIncomingMessageNotification,
   hasMessageBeenNotified, 
   markMessageAsNotified 
 } from '@/lib/notifications';
@@ -71,10 +71,7 @@ export default function FriendlyConnectScreen({
       const latestMsg = memberChats[memberChats.length - 1];
       if (latestMsg && latestMsg.sender === 'admin' && !hasMessageBeenNotified(latestMsg.id)) {
         markMessageAsNotified(latestMsg.id);
-        showBrowserNotification('Naya Message Aaya Hai! 💌', {
-          body: latestMsg.text,
-          tag: latestMsg.id,
-        });
+        triggerIncomingMessageNotification('Special One ❤️', latestMsg.text, latestMsg.id);
       }
     }
     previousChatsLenRef.current = memberChats.length;
@@ -361,11 +358,11 @@ export default function FriendlyConnectScreen({
             {/* Chat Sub-Header */}
             <div className="px-4 py-3 bg-[#FFF5F7] border-b border-[#ffe0e6] flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-full bg-[#FF6B6B] text-white flex items-center justify-center font-bold text-sm shadow-xs">
-                  S
+                <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#ff477e] to-[#ff0055] text-white flex items-center justify-center font-bold text-sm shadow-xs">
+                  ❤️
                 </div>
                 <div>
-                  <h3 className="font-black text-sm text-[#2D3436]">Live Support &amp; Chat</h3>
+                  <h3 className="font-black text-sm text-[#2D3436]">Special One ✨</h3>
                   <p className="text-[11px] text-[#636E72] flex items-center gap-1">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                     Online abhi active hai
@@ -409,8 +406,8 @@ export default function FriendlyConnectScreen({
                       className={`flex gap-2.5 ${isUser ? 'justify-end' : 'justify-start'}`}
                     >
                       {!isUser && (
-                        <div className="w-7 h-7 rounded-full bg-[#FF6B6B] text-white flex items-center justify-center text-[10px] font-black shrink-0 self-end mb-1">
-                          S
+                        <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-[#ff477e] to-[#ff0055] text-white flex items-center justify-center text-[10px] font-black shrink-0 self-end mb-1 shadow-xs">
+                          ❤️
                         </div>
                       )}
 
@@ -422,7 +419,7 @@ export default function FriendlyConnectScreen({
                         }`}
                       >
                         <div className="font-bold text-[10px] opacity-75 mb-0.5">
-                          {isUser ? 'Aap' : 'Support Team'} &bull; {c.timestamp}
+                          {isUser ? 'Aap' : 'Special One ❤️'} &bull; {c.timestamp}
                         </div>
                         <div className="leading-relaxed break-words font-medium">{c.text}</div>
                       </div>

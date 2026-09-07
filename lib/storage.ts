@@ -677,6 +677,12 @@ export function useWhatsAppRegistrations(): WhatsAppRegistration[] {
 let cachedChats: HelpChatMessage[] | null = null;
 let cachedRawChats: string | null = null;
 
+// Cross-tab broadcast channel for instantaneous zero-latency chat sync across multiple tabs
+const chatBroadcastChannel =
+  typeof window !== 'undefined' && 'BroadcastChannel' in window
+    ? new BroadcastChannel('vibematch_cross_tab_chat')
+    : null;
+
 function readHelpChatsInternal(): HelpChatMessage[] {
   if (typeof window === 'undefined') return [];
   initFirestoreListeners();
@@ -732,6 +738,16 @@ export function sendHelpChatMessage(msg: Omit<HelpChatMessage, 'id' | 'timestamp
       cachedRawChats = raw;
       cachedChats = updated;
       window.dispatchEvent(new Event('help_chats_updated'));
+
+      // Broadcast to other browser tabs instantly
+      try {
+        chatBroadcastChannel?.postMessage({
+          type: 'NEW_CHAT_MESSAGE',
+          message: newMsg,
+        });
+      } catch (bcErr) {
+        console.warn('Broadcast error:', bcErr);
+      }
     } catch (e) {
       console.error('Failed to send help chat message:', e);
     }
@@ -818,8 +834,36 @@ export function clearAllHelpChats(): HelpChatMessage[] {
 
 const subscribeHelpChats = (callback: () => void) => {
   if (typeof window === 'undefined') return () => {};
+
+  const handleStorage = (e: StorageEvent) => {
+    if (e.key === STORAGE_KEY_CHATS) {
+      cachedChats = null;
+      cachedRawChats = null;
+      callback();
+    }
+  };
+
+  const handleBroadcast = (event: MessageEvent) => {
+    if (event.data?.type === 'NEW_CHAT_MESSAGE') {
+      cachedChats = null;
+      cachedRawChats = null;
+      callback();
+    }
+  };
+
   window.addEventListener('help_chats_updated', callback);
-  return () => window.removeEventListener('help_chats_updated', callback);
+  window.addEventListener('storage', handleStorage);
+  if (chatBroadcastChannel) {
+    chatBroadcastChannel.addEventListener('message', handleBroadcast);
+  }
+
+  return () => {
+    window.removeEventListener('help_chats_updated', callback);
+    window.removeEventListener('storage', handleStorage);
+    if (chatBroadcastChannel) {
+      chatBroadcastChannel.removeEventListener('message', handleBroadcast);
+    }
+  };
 };
 const getHelpChatsSnapshot = () => readHelpChatsInternal();
 const getHelpChatsServerSnapshot = () => [];

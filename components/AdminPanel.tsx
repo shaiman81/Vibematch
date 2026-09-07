@@ -1356,7 +1356,7 @@ export default function AdminPanel({ onBackToApp }: AdminPanelProps) {
                                     }`}
                                   >
                                     <div className="text-[10px] font-bold opacity-75 mb-0.5">
-                                      {isAdmin ? 'Admin (Aap)' : msg.memberName} • {msg.timestamp}
+                                      {isAdmin ? 'Aap (User ko "Special One ❤️" dikhega)' : msg.memberName} • {msg.timestamp}
                                     </div>
                                     <div className="leading-relaxed break-words">{msg.text}</div>
                                   </div>
@@ -1391,7 +1391,7 @@ export default function AdminPanel({ onBackToApp }: AdminPanelProps) {
                             type="text"
                             value={replyText}
                             onChange={(e) => setReplyText(e.target.value)}
-                            placeholder="Apna reply likhein... (User ke screen par live dikhega)"
+                            placeholder="Special One ❤️ ke roop me reply likhein... (User ke screen par live notification aayega)"
                             className="flex-1 bg-[#FFF5F7] border border-[#ffd1dc] focus:border-[#0088cc] rounded-xl px-4 py-2.5 text-xs sm:text-sm text-[#2D3436] focus:outline-none"
                           />
                           <button
