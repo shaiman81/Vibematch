@@ -25,6 +25,12 @@ import {
   useBlockedMembers
 } from '@/lib/storage';
 import { trackEvent } from '@/lib/analytics';
+import NotificationPermissionModal from '@/components/NotificationPermissionModal';
+import { 
+  showBrowserNotification, 
+  hasMessageBeenNotified, 
+  markMessageAsNotified 
+} from '@/lib/notifications';
 
 interface FriendlyConnectScreenProps {
   member: Member;
@@ -58,6 +64,22 @@ export default function FriendlyConnectScreen({
   // Filter messages for this specific member
   const memberChats = helpChats.filter(c => c.memberId === member.id);
   const unreadCount = memberChats.filter(c => c.sender === 'admin').length;
+
+  // Real-time Push Notification when Admin sends a message
+  const previousChatsLenRef = useRef(memberChats.length);
+  useEffect(() => {
+    if (memberChats.length > previousChatsLenRef.current) {
+      const latestMsg = memberChats[memberChats.length - 1];
+      if (latestMsg && latestMsg.sender === 'admin' && !hasMessageBeenNotified(latestMsg.id)) {
+        markMessageAsNotified(latestMsg.id);
+        showBrowserNotification('Naya Message Aaya Hai! 💌', {
+          body: latestMsg.text,
+          tag: latestMsg.id,
+        });
+      }
+    }
+    previousChatsLenRef.current = memberChats.length;
+  }, [memberChats]);
 
   useEffect(() => {
     if (activeTab === 'chat') {
@@ -592,6 +614,9 @@ export default function FriendlyConnectScreen({
           </div>
         )}
       </AnimatePresence>
+
+      {/* Message Notification Permission Modal (Re-prompts every 1 min or upon entering chat) */}
+      <NotificationPermissionModal triggerInChat={activeTab === 'chat'} />
     </div>
   );
 }

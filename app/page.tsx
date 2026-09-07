@@ -8,6 +8,7 @@ import SuccessScreen from '@/components/SuccessScreen';
 import VeryRomanticScreen from '@/components/VeryRomanticScreen';
 import FriendlyConnectScreen from '@/components/FriendlyConnectScreen';
 import LegalModals, { LegalModalType } from '@/components/LegalModals';
+import NotificationPermissionModal from '@/components/NotificationPermissionModal';
 import { useActiveUser, clearActiveUserSession } from '@/lib/storage';
 import { trackEvent } from '@/lib/analytics';
 
@@ -52,7 +53,7 @@ export default function HomePage() {
 
   if (currentView === 'very_romantic' && activeUser) {
     return (
-      <main className="w-full min-h-screen bg-[#16030c]">
+      <main className="w-full min-h-screen bg-[#FFF9FA]">
         <VeryRomanticScreen
           member={activeUser}
           onBackToApp={() => setViewOverride('landing')}
@@ -356,6 +357,9 @@ export default function HomePage() {
         activeModal={activeLegalModal}
         onClose={() => setActiveLegalModal(null)}
       />
+
+      {/* Message Notification Permission Modal */}
+      <NotificationPermissionModal />
     </main>
   );
 }
