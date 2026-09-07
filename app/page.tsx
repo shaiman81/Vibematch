@@ -165,41 +165,23 @@ export default function HomePage() {
                   id="special-welcome-pill"
                   className="inline-block bg-[#FF6B6B] text-white px-5 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest mb-6 shadow-md transform -rotate-2"
                 >
-                  {activeUser ? 'Saved Session Active' : 'Special Welcome'}
+                  {activeUser ? `Welcome Back ${activeUser.name} ❤️` : 'Romantic & Flirty Chat Zone ✨'}
                 </div>
 
                 {/* Primary Welcome Heading */}
                 <h1
                   id="welcome-heading"
-                  className="text-4xl sm:text-6xl font-black text-[#2D3436] leading-[1.12] mb-6 tracking-tight"
+                  className="text-3xl sm:text-5xl md:text-6xl font-black text-[#2D3436] leading-[1.2] mb-6 tracking-tight"
                 >
-                  {activeUser ? (
-                    <>
-                      Hello Dear{' '}
-                      <span className="text-[#FF6B6B] underline decoration-wavy decoration-[#FF6B6B]">
-                        {activeUser.name}
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      Hello Dear{' '}
-                      <span className="text-[#FF6B6B] underline decoration-wavy decoration-[#FF6B6B]">
-                        Welcome
-                      </span>
-                    </>
-                  )}
+                  Mai Ek <span className="text-[#FF6B6B] underline decoration-wavy decoration-[#FF6B6B]">sexy , romantic</span> larka hu 💕
                 </h1>
 
                 {/* Descriptive Subtext */}
                 <p
                   id="welcome-description"
-                  className="text-xl sm:text-2xl font-medium text-[#636E72] leading-relaxed max-w-lg mx-auto mb-10"
+                  className="text-lg sm:text-2xl font-medium text-[#4A4A4A] leading-relaxed max-w-xl mx-auto mb-10"
                 >
-                  {activeUser ? (
-                    `Aapka profile device me saved hai. Direct apne ${activeUser.mode === 'very_romantic' ? 'Romantic Zone' : 'Friendly Connect'} me enter karein.`
-                  ) : (
-                    'aap sahi jagah aayi ho yaha par aapko Bahut maja aayega aap bahut acha feel karogi'
-                  )}
+                  agar mujhse sexy baate , romance wali baate karni ho to <span className="font-bold text-[#FF6B6B]">get started</span> par click karo
                 </p>
 
                 {/* Action CTA Button */}
